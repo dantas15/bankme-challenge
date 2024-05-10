@@ -2,10 +2,9 @@ import { faker } from './faker-config';
 
 export function createAssignor() {
   return {
-    id: faker.string.uuid(),
     document: faker.string.numeric({ length: 11 }),
     email: faker.internet.email(),
-    phone: faker.phone.number(),
+    phone: faker.phone.number().replace(/\D/g, ''),
     name: faker.person.fullName(),
   };
 }
