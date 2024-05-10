@@ -16,3 +16,10 @@
   - Para os testes que precisavam estar "errados" eu mexi manualmente
 - Para testar as validações eu mockei o ValidationPipe
   - tirei de: <https://stackoverflow.com/questions/60819612/how-to-test-validation-pipe-is-throwing-the-expect-error-for-improperly-shaped-r>
+
+## Persistêcia
+
+- Instalando [prisma](https://docs.nestjs.com/recipes/prisma)
+- rodando migrations com `prisma migrate dev` (cria as migrations baseado nas mudanças em `schema.prisma`)
+  - em prod, deve-se rodar `prisma migrate deploy`
+-
