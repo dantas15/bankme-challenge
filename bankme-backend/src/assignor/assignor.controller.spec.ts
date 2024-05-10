@@ -43,7 +43,7 @@ describe('AssignorController', () => {
 
     it('should return validation error messages if data is not valid', async () => {
       const wrongAssignor = {
-        document: Number('1'.repeat(11)),
+        document: Number('1'.repeat(10)),
         email: 'not valid',
         phone: 'not valid',
         name: 123,
