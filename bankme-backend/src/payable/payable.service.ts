@@ -1,13 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePayableDto } from './dto/create-payable.dto';
 import { UpdatePayableDto } from './dto/update-payable.dto';
-import { faker } from '@faker-js/faker';
 
 @Injectable()
 export class PayableService {
   create(createPayableDto: CreatePayableDto) {
-    console.log(`create payable`, { createPayableDto });
-    return { ...createPayableDto, id: faker.string.uuid() };
+    return createPayableDto;
   }
 
   findAll() {
@@ -20,7 +18,11 @@ export class PayableService {
 
   update(id: string, updatePayableDto: UpdatePayableDto) {
     console.log(`update payable with id = ${id}`, { updatePayableDto });
-    return `This action updates a #${id} payable`;
+    return {
+      dataChanged: `${Object.keys(updatePayableDto)
+        .filter((k) => !!k)
+        .join('')}`,
+    };
   }
 
   remove(id: string) {
