@@ -13,22 +13,22 @@ export class AssignorService {
     });
   }
 
-  findAll() {
-    return this.prismaService.assignor.findMany();
+  async findAll() {
+    return await this.prismaService.assignor.findMany();
   }
 
-  findOne(id: string) {
-    return this.prismaService.assignor.findUnique({ where: { id } });
+  async findOne(id: string) {
+    return await this.prismaService.assignor.findUnique({ where: { id } });
   }
 
-  update(id: string, updateAssignorDto: UpdateAssignorDto) {
-    return this.prismaService.assignor.update({
+  async update(id: string, updateAssignorDto: UpdateAssignorDto) {
+    return await this.prismaService.assignor.update({
       where: { id },
       data: updateAssignorDto,
     });
   }
 
-  remove(id: string) {
-    return this.prismaService.assignor.delete({ where: { id } });
+  async remove(id: string) {
+    return await this.prismaService.assignor.delete({ where: { id } });
   }
 }
