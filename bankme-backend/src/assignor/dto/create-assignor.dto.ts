@@ -13,7 +13,7 @@ export class CreateAssignorDto {
   @Matches(/^[0-9]{11}$|^[0-9]{14}$/, {
     // this validation length is because
     // brazillian documents can only be CPF (11 digits) or CNPJ (14 digits)
-    message: 'Document must be either 11 or 14 characters long',
+    message: 'document must be either 11 or 14 characters long',
   })
   document: string;
 
