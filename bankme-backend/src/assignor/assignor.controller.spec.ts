@@ -33,8 +33,6 @@ describe('AssignorController', () => {
     it('should return the assignor data if all information is right', async () => {
       const validAssignor = createAssignor();
 
-      console.log(validAssignor);
-
       const result = await target
         .transform(validAssignor, metadata)
         .catch((e) => console.log(e));
