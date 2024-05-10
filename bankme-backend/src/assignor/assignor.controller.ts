@@ -12,7 +12,7 @@ import { AssignorService } from './assignor.service';
 import { CreateAssignorDto } from './dto/create-assignor.dto';
 import { UpdateAssignorDto } from './dto/update-assignor.dto';
 
-@Controller('assignor')
+@Controller('integrations/assignor')
 export class AssignorController {
   constructor(private readonly assignorService: AssignorService) {}
 

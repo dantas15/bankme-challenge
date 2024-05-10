@@ -1,26 +1,34 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAssignorDto } from './dto/create-assignor.dto';
 import { UpdateAssignorDto } from './dto/update-assignor.dto';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class AssignorService {
-  create(createAssignorDto: CreateAssignorDto) {
-    return createAssignorDto;
+  constructor(private readonly prismaService: PrismaService) {}
+
+  async create(createAssignorDto: CreateAssignorDto) {
+    return await this.prismaService.assignor.create({
+      data: createAssignorDto,
+    });
   }
 
   findAll() {
-    return `This action returns all assignor`;
+    return this.prismaService.assignor.findMany();
   }
 
   findOne(id: string) {
-    return `This action returns a #${id} assignor`;
+    return this.prismaService.assignor.findUnique({ where: { id } });
   }
 
   update(id: string, updateAssignorDto: UpdateAssignorDto) {
-    return `This action updates a #${id} assignor`;
+    return this.prismaService.assignor.update({
+      where: { id },
+      data: updateAssignorDto,
+    });
   }
 
   remove(id: string) {
-    return `This action removes a #${id} assignor`;
+    return this.prismaService.assignor.delete({ where: { id } });
   }
 }
