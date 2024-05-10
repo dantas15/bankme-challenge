@@ -23,7 +23,7 @@ export class CreateAssignorDto {
   email: string;
 
   @IsNotEmpty()
-  @IsPhoneNumber('BR')
+  //@IsPhoneNumber('BR') // For it to work it must match '(99) 99999-9999' format so I'll leave it like that for now
   @MaxLength(20)
   phone: string;
 
