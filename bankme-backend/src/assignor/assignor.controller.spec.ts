@@ -4,6 +4,7 @@ import { AssignorService } from './assignor.service';
 import { ArgumentMetadata, ValidationPipe } from '@nestjs/common';
 import { CreateAssignorDto } from './dto/create-assignor.dto';
 import { createAssignor } from '../helpers/faker/assignor';
+import { PrismaService } from '../prisma/prisma.service';
 
 describe('AssignorController', () => {
   let controller: AssignorController;
@@ -11,7 +12,7 @@ describe('AssignorController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [AssignorController],
-      providers: [AssignorService],
+      providers: [PrismaService, AssignorService],
     }).compile();
 
     controller = module.get<AssignorController>(AssignorController);

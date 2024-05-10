@@ -4,6 +4,7 @@ import { PayableService } from './payable.service';
 import { createPayable } from '../helpers/faker/payable';
 import { CreatePayableDto } from './dto/create-payable.dto';
 import { ArgumentMetadata, ValidationPipe } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
 
 describe('PayableController', () => {
   let controller: PayableController;
@@ -11,7 +12,7 @@ describe('PayableController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [PayableController],
-      providers: [PayableService],
+      providers: [PrismaService, PayableService],
     }).compile();
 
     controller = module.get<PayableController>(PayableController);
