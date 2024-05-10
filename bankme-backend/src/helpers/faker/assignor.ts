@@ -1,6 +1,6 @@
 import { faker } from './faker-config';
 
-export function createAssignorDto() {
+export function createAssignor() {
   return {
     id: faker.string.uuid(),
     document: faker.string.numeric({ length: 11 }),
@@ -10,6 +10,6 @@ export function createAssignorDto() {
   };
 }
 
-export const assignors = faker.helpers.multiple(createAssignorDto, {
+export const assignors = faker.helpers.multiple(createAssignor, {
   count: 10,
 });
