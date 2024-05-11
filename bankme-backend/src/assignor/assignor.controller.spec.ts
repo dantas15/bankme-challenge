@@ -3,11 +3,15 @@ import { AssignorController } from './assignor.controller';
 import { AssignorService } from './assignor.service';
 import { ArgumentMetadata, ValidationPipe } from '@nestjs/common';
 import { CreateAssignorDto } from './dto/create-assignor.dto';
-import { createAssignor } from '../helpers/faker/assignor';
+import {
+  assignors as mockedAssignors,
+  createAssignor,
+} from '../helpers/faker/assignor';
 import { PrismaService } from '../prisma/prisma.service';
 
 describe('AssignorController', () => {
   let controller: AssignorController;
+  let prisma: PrismaService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -16,6 +20,7 @@ describe('AssignorController', () => {
     }).compile();
 
     controller = module.get<AssignorController>(AssignorController);
+    prisma = module.get<PrismaService>(PrismaService);
   });
 
   it('should be defined', () => {
@@ -31,6 +36,7 @@ describe('AssignorController', () => {
       type: 'body',
       metatype: CreateAssignorDto,
     };
+
     it('should return the assignor data if all information is right', async () => {
       const validAssignor = createAssignor();
 
@@ -78,6 +84,28 @@ describe('AssignorController', () => {
           'name should not be empty',
         ]);
       });
+    });
+
+    it('should return assignor data if data is valid', async () => {
+      const mockAssignor = createAssignor();
+      prisma.assignor.create = jest.fn().mockReturnValue(mockAssignor);
+
+      const result = await controller.create(mockAssignor);
+
+      expect(prisma.assignor.create).toHaveBeenCalledWith({
+        data: mockAssignor,
+      });
+      expect(result).toBe(mockAssignor);
+    });
+  });
+
+  describe('find all assignors', () => {
+    it('should return an array of assignors', async () => {
+      prisma.assignor.findMany = jest.fn().mockReturnValue(mockedAssignors);
+      const result = await controller.findAll();
+
+      expect(prisma.assignor.findMany).toHaveBeenCalledTimes(1);
+      expect(result).toBe(mockedAssignors);
     });
   });
 });
