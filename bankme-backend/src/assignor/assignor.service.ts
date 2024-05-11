@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateAssignorDto } from './dto/create-assignor.dto';
 import { UpdateAssignorDto } from './dto/update-assignor.dto';
 import { PrismaService } from '../prisma/prisma.service';
+import { AssignorHasPendingPayablesException } from '../exceptions/assignor-has-pending-payables';
 
 @Injectable()
 export class AssignorService {
@@ -29,6 +30,17 @@ export class AssignorService {
   }
 
   async remove(id: string) {
-    return await this.prismaService.assignor.delete({ where: { id } });
+    const assignorToBeDeleted = await this.prismaService.assignor.findUnique({
+      where: { id },
+      include: { Payable: true },
+    });
+
+    if (!assignorToBeDeleted || assignorToBeDeleted.Payable.length > 0) {
+      throw new AssignorHasPendingPayablesException();
+    }
+    return await this.prismaService.assignor.delete({
+      where: { id },
+      // include: { Payable: true }, // maybe delete the payables if assignor is deleted?
+    });
   }
 }
