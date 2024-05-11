@@ -1,31 +1,67 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePayableDto } from './dto/create-payable.dto';
 import { UpdatePayableDto } from './dto/update-payable.dto';
+import { PrismaService } from '../prisma/prisma.service';
+import { AssignorNotFoundException } from '../exceptions/assignor-not-found.exception';
 
 @Injectable()
 export class PayableService {
-  create(createPayableDto: CreatePayableDto) {
-    return createPayableDto;
+  constructor(private readonly prismaService: PrismaService) {}
+
+  async create({ assignorId, emissionDate, value }: CreatePayableDto) {
+    const assignorExists = await this.assignorExists(assignorId);
+
+    if (!assignorExists) {
+      throw new AssignorNotFoundException(assignorId);
+    }
+
+    return await this.prismaService.payable.create({
+      data: {
+        assignor: { connect: { id: assignorId } },
+        emissionDate: new Date(emissionDate),
+        value,
+      },
+    });
   }
 
-  findAll() {
-    return `This action returns all payable`;
+  async findAll() {
+    return await this.prismaService.payable.findMany();
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} payable`;
+  async findOne(id: string) {
+    return await this.prismaService.payable.findUnique({ where: { id } });
   }
 
-  update(id: string, updatePayableDto: UpdatePayableDto) {
-    console.log(`update payable with id = ${id}`, { updatePayableDto });
-    return {
-      dataChanged: `${Object.keys(updatePayableDto)
-        .filter((k) => !!k)
-        .join('')}`,
-    };
+  async update(
+    id: string,
+    { assignorId, ...updatePayableDto }: UpdatePayableDto,
+  ) {
+    if (!assignorId) {
+      return await this.prismaService.payable.update({
+        where: { id },
+        data: updatePayableDto,
+      });
+    }
+
+    const newAssignorExists = await this.assignorExists(assignorId);
+
+    if (!newAssignorExists) {
+      throw new AssignorNotFoundException(assignorId);
+    }
+
+    return await this.prismaService.payable.update({
+      where: { id },
+      data: { ...updatePayableDto, assignor: { connect: { id: assignorId } } },
+    });
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} payable`;
+  async remove(id: string) {
+    return await this.prismaService.payable.delete({ where: { id } });
+  }
+
+  async assignorExists(assignorId: string) {
+    return !!(await this.prismaService.assignor.findUnique({
+      where: { id: assignorId },
+    }));
   }
 }
