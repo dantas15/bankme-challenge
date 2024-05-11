@@ -6,12 +6,23 @@ import { CreateAssignorDto } from './dto/create-assignor.dto';
 import {
   assignors as mockedAssignors,
   createAssignor,
+  createAssignorWithEmptyPayables,
+  createAssignorWithPayables,
 } from '../helpers/faker/assignor';
 import { PrismaService } from '../prisma/prisma.service';
+import { generateUuid } from '../helpers/faker/uuid';
+import { UpdateAssignorDto } from './dto/update-assignor.dto';
+import { AssignorHasPendingPayablesException } from '../exceptions/assignor-has-pending-payables';
+import { AssignorNotFoundException } from '../exceptions/assignor-not-found.exception';
 
 describe('AssignorController', () => {
   let controller: AssignorController;
   let prisma: PrismaService;
+
+  const target: ValidationPipe = new ValidationPipe({
+    transform: true,
+    whitelist: true,
+  });
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -28,10 +39,6 @@ describe('AssignorController', () => {
   });
 
   describe('create assignor', () => {
-    const target: ValidationPipe = new ValidationPipe({
-      transform: true,
-      whitelist: true,
-    });
     const metadata: ArgumentMetadata = {
       type: 'body',
       metatype: CreateAssignorDto,
@@ -94,6 +101,130 @@ describe('AssignorController', () => {
 
       expect(prisma.assignor.findMany).toHaveBeenCalledTimes(1);
       expect(result).toBe(mockedAssignors);
+    });
+  });
+
+  describe('find one assignor', () => {
+    it('should show one assignor based on the id', async () => {
+      const assignorId = generateUuid();
+      const assignor = { ...createAssignor(), id: assignorId };
+      prisma.assignor.findUnique = jest.fn().mockReturnValue(assignor);
+
+      const result = await controller.findOne(assignorId);
+
+      expect(prisma.assignor.findUnique).toHaveBeenCalledWith({
+        where: { id: assignorId },
+      });
+      expect(result).toBe(assignor);
+    });
+  });
+
+  describe('update assignor', () => {
+    it('should update assignor if all data is valid', async () => {
+      const assignorId = generateUuid();
+      const updatedAssignor = {
+        id: assignorId,
+        document: '12345678901',
+        email: 'modifiedMail@test.com',
+        phone: '12345678900',
+        name: 'modified name',
+      };
+      prisma.assignor.update = jest.fn().mockReturnValue(updatedAssignor);
+
+      const result = await controller.update(assignorId, updatedAssignor);
+
+      expect(prisma.assignor.update).toHaveBeenCalledWith({
+        where: { id: assignorId },
+        data: updatedAssignor,
+      });
+      expect(result).toBe(updatedAssignor);
+    });
+
+    it('should not update assignor if id is not valid', async () => {
+      const metadata: ArgumentMetadata = {
+        type: 'body',
+        metatype: UpdateAssignorDto,
+      };
+      const assignorId = generateUuid();
+      const updatedAssignor = {
+        id: assignorId,
+        document: '1'.repeat(31),
+        phone: '1'.repeat(21),
+        name: '1'.repeat(141),
+      };
+      prisma.assignor.update = jest.fn();
+
+      await controller.update(assignorId, updatedAssignor);
+
+      expect(prisma.assignor.update).toHaveBeenCalledWith({
+        where: { id: assignorId },
+        data: updatedAssignor,
+      });
+
+      await target
+        .transform(<UpdateAssignorDto>updatedAssignor, metadata)
+        .catch((err) => {
+          expect(err.getResponse().message).toEqual([
+            'document must be either 11 or 14 characters long',
+            'phone must be shorter than or equal to 20 characters',
+            'name must be shorter than or equal to 140 characters',
+          ]);
+        });
+    });
+  });
+
+  describe('remove assignor', () => {
+    it('should remove assignor if it has no payables pending', async () => {
+      const assignorId = generateUuid();
+      prisma.assignor.delete = jest.fn();
+
+      prisma.assignor.findUnique = jest.fn().mockReturnValue({
+        id: assignorId,
+        ...createAssignorWithEmptyPayables(),
+      });
+
+      await controller.remove(assignorId);
+
+      expect(prisma.assignor.delete).toHaveBeenCalledWith({
+        where: { id: assignorId },
+      });
+    });
+
+    it('should not remove assignor and throw exception if it has pending payables', async () => {
+      const assignorId = generateUuid();
+      prisma.assignor.delete = jest.fn();
+
+      prisma.assignor.findUnique = jest.fn().mockReturnValue({
+        id: assignorId,
+        ...createAssignorWithPayables(),
+      });
+
+      await controller.remove(assignorId).catch((exception) => {
+        expect(exception).toBeInstanceOf(AssignorHasPendingPayablesException);
+      });
+
+      expect(prisma.assignor.findUnique).toHaveBeenCalledWith({
+        where: { id: assignorId },
+        include: { Payables: true },
+      });
+      expect(prisma.assignor.delete).not.toHaveBeenCalled();
+    });
+
+    it('should not throw exception if it does not exist', async () => {
+      const assignorId = generateUuid();
+      prisma.assignor.delete = jest.fn();
+
+      prisma.assignor.findUnique = jest.fn().mockReturnValue(null);
+
+      await controller.remove(assignorId).catch((exception) => {
+        expect(exception).toBeInstanceOf(AssignorNotFoundException);
+      });
+
+      expect(prisma.assignor.findUnique).toHaveBeenCalledWith({
+        where: { id: assignorId },
+        include: { Payables: true },
+      });
+      expect(prisma.assignor.delete).not.toHaveBeenCalled();
     });
   });
 });
