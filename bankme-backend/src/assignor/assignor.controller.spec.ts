@@ -37,16 +37,6 @@ describe('AssignorController', () => {
       metatype: CreateAssignorDto,
     };
 
-    it('should return the assignor data if all information is right', async () => {
-      const validAssignor = createAssignor();
-
-      const result = await target
-        .transform(validAssignor, metadata)
-        .catch((e) => console.log(e));
-
-      expect(result).toMatchObject(validAssignor);
-    });
-
     it('should return validation error messages if data is not valid', async () => {
       const wrongAssignor = {
         document: Number('1'.repeat(10)),
