@@ -19,7 +19,7 @@ model Assignor {
   email    String
   phone    String
   name     String
-  Payable  Payable[]
+  Payables Payable[]
 }
 
 model Payable {

@@ -32,10 +32,10 @@ export class AssignorService {
   async remove(id: string) {
     const assignorToBeDeleted = await this.prismaService.assignor.findUnique({
       where: { id },
-      include: { Payable: true },
+      include: { Payables: true },
     });
 
-    if (!assignorToBeDeleted || assignorToBeDeleted.Payable.length > 0) {
+    if (!assignorToBeDeleted || assignorToBeDeleted.Payables.length > 0) {
       throw new AssignorHasPendingPayablesException();
     }
     return await this.prismaService.assignor.delete({
