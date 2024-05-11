@@ -3,6 +3,7 @@ import { CreateAssignorDto } from './dto/create-assignor.dto';
 import { UpdateAssignorDto } from './dto/update-assignor.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { AssignorHasPendingPayablesException } from '../exceptions/assignor-has-pending-payables';
+import { AssignorNotFoundException } from '../exceptions/assignor-not-found.exception';
 
 @Injectable()
 export class AssignorService {
@@ -35,9 +36,14 @@ export class AssignorService {
       include: { Payables: true },
     });
 
-    if (!assignorToBeDeleted || assignorToBeDeleted.Payables.length > 0) {
+    if (!assignorToBeDeleted) {
+      throw new AssignorNotFoundException(id);
+    }
+
+    if (assignorToBeDeleted.Payables.length > 0) {
       throw new AssignorHasPendingPayablesException();
     }
+
     return await this.prismaService.assignor.delete({
       where: { id },
       // include: { Payable: true }, // maybe delete the payables if assignor is deleted?
