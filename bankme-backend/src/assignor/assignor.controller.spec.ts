@@ -66,8 +66,6 @@ describe('AssignorController', () => {
       });
     });
 
-    it('should return validation error messages if data has more characters than specified', () => {});
-
     it('should return validation error messages if data is empty', async () => {
       await target.transform(<CreateAssignorDto>{}, metadata).catch((err) => {
         expect(err.getResponse().message).toEqual([
