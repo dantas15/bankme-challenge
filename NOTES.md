@@ -22,4 +22,7 @@
 - Instalando [prisma](https://docs.nestjs.com/recipes/prisma)
 - rodando migrations com `prisma migrate dev` (cria as migrations baseado nas mudanças em `schema.prisma`)
   - em prod, deve-se rodar `prisma migrate deploy`
--
+
+## Prisma e testes
+
+- Referenciando o serviço do prisma: <https://stackoverflow.com/questions/70228893/testing-a-nestjs-service-that-uses-prisma-without-actually-accessing-the-databas>
