@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { CreateAssignorDto } from './dto/create-assignor.dto';
 import { UpdateAssignorDto } from './dto/update-assignor.dto';
 import { PrismaService } from '../prisma/prisma.service';
-import { AssignorHasPendingPayablesException } from '../../exceptions/assignor-has-pending-payables';
-import { AssignorNotFoundException } from '../../exceptions/assignor-not-found.exception';
+import { AssignorHasPendingPayablesException } from './exceptions/assignor-has-pending-payables';
+import { AssignorNotFoundException } from './exceptions/assignor-not-found.exception';
 
 @Injectable()
 export class AssignorService {
