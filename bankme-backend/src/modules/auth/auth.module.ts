@@ -1,14 +1,15 @@
 import { Module } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
+import { JwtModule, JwtService } from '@nestjs/jwt';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { UsersModule } from '../users/users.module';
+import { UserModule } from '../user/user.module';
 import { jwtConfig } from '../../config/auth.config';
+import { UserService } from '../user/user.service';
 
 @Module({
   imports: [
-    UsersModule,
+    UserModule,
     JwtModule.register({
       global: true,
       secret: jwtConfig.secret,
@@ -16,6 +17,6 @@ import { jwtConfig } from '../../config/auth.config';
     }),
   ],
   controllers: [AuthController],
-  providers: [PrismaService, AuthService],
+  providers: [PrismaService, JwtService, UserService, AuthService],
 })
 export class AuthModule {}
