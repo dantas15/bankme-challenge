@@ -8,6 +8,14 @@ export function createPayable() {
   };
 }
 
+export function createPayableWithoutAssignorId() {
+  return {
+    value: faker.number.float(),
+    emissionDate: faker.date.anytime().toISOString(),
+    assignorId: faker.string.uuid(),
+  };
+}
+
 export const payables = faker.helpers.multiple(createPayable, {
   count: 10,
 });
