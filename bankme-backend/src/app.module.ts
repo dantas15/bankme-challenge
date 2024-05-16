@@ -5,15 +5,15 @@ import { AppService } from './app.service';
 import { PayableModule } from './modules/payable/payable.module';
 import { AssignorModule } from './modules/assignor/assignor.module';
 import { AuthModule } from './modules/auth/auth.module';
-import { UsersModule } from './modules/users/users.module';
+import { UserModule } from './modules/user/user.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     AssignorModule,
     PayableModule,
+    UserModule,
     AuthModule,
-    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
