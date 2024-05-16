@@ -34,6 +34,11 @@ describe('AssignorController', () => {
     prisma = module.get<PrismaService>(PrismaService);
   });
 
+  afterEach(async () => {
+    // prevents error from multiple instances of prisma at the same time
+    await prisma.onModuleDestroy();
+  });
+
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
