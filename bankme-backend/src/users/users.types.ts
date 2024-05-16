@@ -1,5 +1,4 @@
-const ROLES = ['ADMIN', 'USER'] as const;
-export type Role = (typeof ROLES)[number];
+import { Role } from './roles.types';
 
 export type User = {
   name: string;
