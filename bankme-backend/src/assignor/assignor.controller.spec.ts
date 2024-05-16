@@ -145,7 +145,7 @@ describe('AssignorController', () => {
       expect(result).toBe(updatedAssignor);
     });
 
-    it('should not update assignor if id is not valid', async () => {
+    it('should not update assignor if data is not valid', async () => {
       const metadata: ArgumentMetadata = {
         type: 'body',
         metatype: UpdateAssignorDto,
@@ -159,13 +159,6 @@ describe('AssignorController', () => {
       };
       prisma.assignor.update = jest.fn();
 
-      await controller.update(assignorId, updatedAssignor);
-
-      expect(prisma.assignor.update).toHaveBeenCalledWith({
-        where: { id: assignorId },
-        data: updatedAssignor,
-      });
-
       await target
         .transform(<UpdateAssignorDto>updatedAssignor, metadata)
         .catch((err) => {
@@ -175,6 +168,7 @@ describe('AssignorController', () => {
             'name must be shorter than or equal to 140 characters',
           ]);
         });
+      expect(prisma.assignor.update).not.toHaveBeenCalled();
     });
   });
 
