@@ -209,7 +209,7 @@ describe('AssignorController', () => {
       expect(prisma.assignor.delete).not.toHaveBeenCalled();
     });
 
-    it('should not throw exception if it does not exist', async () => {
+    it('should throw exception if assignor does not exist', async () => {
       const assignorId = generateUuid();
       prisma.assignor.delete = jest.fn();
 
