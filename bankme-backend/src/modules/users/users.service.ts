@@ -5,7 +5,7 @@ import { PrismaService } from '../prisma/prisma.service';
 export class UsersService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async findOne(id: string) {
-    return await this.prismaService.user.findFirst({ where: { id } });
+  async findOneByUsername(username: string) {
+    return await this.prismaService.user.findFirst({ where: { username } });
   }
 }
