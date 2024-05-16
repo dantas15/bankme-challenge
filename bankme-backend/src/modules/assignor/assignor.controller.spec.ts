@@ -8,12 +8,12 @@ import {
   createAssignor,
   createAssignorWithEmptyPayables,
   createAssignorWithPayables,
-} from '../helpers/faker/assignor';
+} from '../../helpers/faker/assignor';
 import { PrismaService } from '../prisma/prisma.service';
-import { generateUuid } from '../helpers/faker/uuid';
+import { generateUuid } from '../../helpers/faker/uuid';
 import { UpdateAssignorDto } from './dto/update-assignor.dto';
-import { AssignorHasPendingPayablesException } from '../exceptions/assignor-has-pending-payables';
-import { AssignorNotFoundException } from '../exceptions/assignor-not-found.exception';
+import { AssignorHasPendingPayablesException } from '../../exceptions/assignor-has-pending-payables';
+import { AssignorNotFoundException } from '../../exceptions/assignor-not-found.exception';
 
 describe('AssignorController', () => {
   let controller: AssignorController;

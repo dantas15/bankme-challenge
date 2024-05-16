@@ -1,6 +1,6 @@
 import { faker } from './faker-config';
 import { payables as mockPayables } from './payable';
-import { CreatePayableDto } from '../../payable/dto/create-payable.dto';
+import { CreatePayableDto } from '../../modules/payable/dto/create-payable.dto';
 
 export function createAssignor() {
   return {

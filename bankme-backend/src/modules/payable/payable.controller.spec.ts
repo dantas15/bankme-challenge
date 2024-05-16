@@ -4,12 +4,12 @@ import { PayableService } from './payable.service';
 import {
   createPayable,
   payables as mockedPayables,
-} from '../helpers/faker/payable';
+} from '../../helpers/faker/payable';
 import { CreatePayableDto } from './dto/create-payable.dto';
 import { ArgumentMetadata, ValidationPipe } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { generateUuid } from '../helpers/faker/uuid';
-import { AssignorNotFoundException } from '../exceptions/assignor-not-found.exception';
+import { generateUuid } from '../../helpers/faker/uuid';
+import { AssignorNotFoundException } from '../../exceptions/assignor-not-found.exception';
 
 describe('PayableController', () => {
   let controller: PayableController;

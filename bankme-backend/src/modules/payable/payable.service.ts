@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreatePayableDto } from './dto/create-payable.dto';
 import { UpdatePayableDto } from './dto/update-payable.dto';
 import { PrismaService } from '../prisma/prisma.service';
-import { AssignorNotFoundException } from '../exceptions/assignor-not-found.exception';
+import { AssignorNotFoundException } from '../../exceptions/assignor-not-found.exception';
 
 @Injectable()
 export class PayableService {
