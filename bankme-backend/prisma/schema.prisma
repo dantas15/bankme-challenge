@@ -32,7 +32,7 @@ model Payable {
 
 model User {
   id       String @id @default(uuid())
-  name     String
+  username String @unique
   password String
   role     String @default("USER")
 }
