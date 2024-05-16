@@ -11,7 +11,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { generateUuid } from '../../helpers/faker/uuid';
 import { AssignorNotFoundException } from '../assignor/exceptions/assignor-not-found.exception';
 
-describe('PayableController', () => {
+describe('Payable', () => {
   let controller: PayableController;
   let prisma: PrismaService;
   let service: PayableService;

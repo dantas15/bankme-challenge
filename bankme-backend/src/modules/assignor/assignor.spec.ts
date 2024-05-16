@@ -15,7 +15,7 @@ import { UpdateAssignorDto } from './dto/update-assignor.dto';
 import { AssignorHasPendingPayablesException } from './exceptions/assignor-has-pending-payables.exception';
 import { AssignorNotFoundException } from './exceptions/assignor-not-found.exception';
 
-describe('AssignorController', () => {
+describe('Assignor', () => {
   let controller: AssignorController;
   let prisma: PrismaService;
 

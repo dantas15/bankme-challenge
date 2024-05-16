@@ -3,7 +3,7 @@ import { UserController } from './user.controller';
 import { PrismaService } from '../prisma/prisma.service';
 import { UserService } from './user.service';
 
-describe('UserController', () => {
+describe('User', () => {
   let controller: UserController;
   let service: UserService;
   let prismaService: PrismaService;

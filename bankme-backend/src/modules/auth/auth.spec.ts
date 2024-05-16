@@ -7,7 +7,7 @@ import { UserModule } from '../user/user.module';
 import { UserService } from '../user/user.service';
 import { PrismaService } from '../prisma/prisma.service';
 
-describe('AuthController', () => {
+describe('Auth', () => {
   let controller: AuthController;
   let service: AuthService;
 
