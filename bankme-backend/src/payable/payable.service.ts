@@ -34,12 +34,16 @@ export class PayableService {
 
   async update(
     id: string,
-    { assignorId, ...updatePayableDto }: UpdatePayableDto,
+    { assignorId, emissionDate, value }: UpdatePayableDto,
   ) {
+    const newPayableData = {
+      emissionDate: emissionDate ? new Date(emissionDate) : undefined,
+      value,
+    };
     if (!assignorId) {
       return await this.prismaService.payable.update({
         where: { id },
-        data: updatePayableDto,
+        data: newPayableData,
       });
     }
 
@@ -51,7 +55,7 @@ export class PayableService {
 
     return await this.prismaService.payable.update({
       where: { id },
-      data: { ...updatePayableDto, assignor: { connect: { id: assignorId } } },
+      data: { ...newPayableData, assignor: { connect: { id: assignorId } } },
     });
   }
 
