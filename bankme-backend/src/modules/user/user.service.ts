@@ -16,7 +16,7 @@ export class UserService {
       throw new UsernameAlreadyExistsException();
     }
 
-    const hashedPassword = bcrypt.hashSync(password, 10);
+    const hashedPassword = this.hashUserPassword(password);
 
     return await this.prismaService.user.create({
       data: { username, password: hashedPassword },
@@ -36,5 +36,9 @@ export class UserService {
       ...user,
       role: ensureCorrectUserRole(user.role),
     };
+  }
+
+  hashUserPassword(passwordBeforeHash: string) {
+    return bcrypt.hashSync(passwordBeforeHash, 10);
   }
 }
