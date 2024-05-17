@@ -21,7 +21,6 @@ import { AuthGuard } from './auth.guard';
   controllers: [AuthController],
   providers: [
     PrismaService,
-    JwtService,
     UserService,
     AuthService,
     {
