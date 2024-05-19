@@ -1,4 +1,4 @@
-import * as bcrypt from 'bcrypt';
+import { hashSync } from 'bcrypt';
 import { faker } from './faker-config';
 import { ensureCorrectUserRole } from '../ensureCorrectUserRole';
 
@@ -14,7 +14,7 @@ export function createUserWithIdAndHashedPassword() {
   return {
     id: faker.string.uuid(),
     username: faker.internet.userName(),
-    password: bcrypt.hashSync(faker.internet.password(), 10),
+    password: hashSync(faker.internet.password(), 10),
     role: ensureCorrectUserRole('USER'),
   };
 }

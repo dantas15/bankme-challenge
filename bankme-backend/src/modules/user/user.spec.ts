@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import * as bcrypt from 'bcrypt';
+import { hash } from 'bcrypt';
 import { UserController } from './user.controller';
 import { PrismaService } from '../prisma/prisma.service';
 import { UserService } from './user.service';
@@ -83,7 +83,7 @@ describe('User', () => {
       const mockUser = createUser();
       const mockUserWithHashPassword = {
         username: mockUser.username,
-        password: bcrypt.hashSync(mockUser.password, 10),
+        password: await hash(mockUser.password, 10),
       };
 
       service.findOneByUsername = jest.fn().mockReturnValue(false);

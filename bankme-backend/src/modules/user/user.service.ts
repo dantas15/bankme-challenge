@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
+import { hash } from 'bcrypt';
 import { PrismaService } from '../prisma/prisma.service';
 import { ensureCorrectUserRole } from '../../helpers/ensureCorrectUserRole';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -16,7 +16,7 @@ export class UserService {
       throw new UsernameAlreadyExistsException();
     }
 
-    const hashedPassword = this.hashUserPassword(password);
+    const hashedPassword = await this.hashUserPassword(password);
 
     return await this.prismaService.user.create({
       data: { username, password: hashedPassword },
@@ -38,7 +38,7 @@ export class UserService {
     };
   }
 
-  hashUserPassword(passwordBeforeHash: string) {
-    return bcrypt.hashSync(passwordBeforeHash, 10);
+  async hashUserPassword(passwordBeforeHash: string) {
+    return await hash(passwordBeforeHash, 10);
   }
 }

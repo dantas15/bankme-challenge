@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { compareSync as comparePasswordSync } from 'bcrypt';
+import { compare } from 'bcrypt';
 import { SignInDto } from './dto/sign-in.dto';
 import { UserService } from '../user/user.service';
 import { InvalidUserCredentialsException } from './exceptions/invalid-user-credentials.exception';
@@ -20,7 +20,7 @@ export class AuthService {
       throw new InvalidUserCredentialsException();
     }
 
-    const isPasswordValid = comparePasswordSync(password, user.password);
+    const isPasswordValid = await this.comparePassword(password, user.password);
 
     if (!isPasswordValid) {
       // Throws the same as username for security reasons
@@ -37,5 +37,9 @@ export class AuthService {
     return {
       access_token: this.jwtService.sign(payload),
     };
+  }
+
+  async comparePassword(password: string, hashedPassword: string) {
+    return await compare(password, hashedPassword);
   }
 }
