@@ -11,10 +11,12 @@ export function createUser() {
 }
 
 export function createUserWithIdAndHashedPassword() {
+  const unhashedPassword = faker.internet.password();
   return {
     id: faker.string.uuid(),
     username: faker.internet.userName(),
-    password: hashSync(faker.internet.password(), 10),
+    unhashedPassword,
+    password: hashSync(unhashedPassword, 10),
     role: ensureCorrectUserRole('USER'),
   };
 }
