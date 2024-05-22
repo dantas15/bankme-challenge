@@ -18,8 +18,6 @@ describe('AuthGuard', () => {
   let guard: AuthGuard;
   let context: ExecutionContext;
 
-  beforeAll(() => {});
-
   beforeEach(() => {
     reflector = new Reflector();
     jwtService = new JwtService({
