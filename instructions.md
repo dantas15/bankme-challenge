@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./assets/logo-bankme.png" alt="Logo Bankme" width="91" height="108">
+  <img src="./.github/logo-bankme.png" alt="Logo Bankme" width="91" height="108">
 </p>
 <h1 align="center">
   Aprove-me
