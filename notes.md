@@ -46,7 +46,3 @@
 ## Observações
 
 - talvez devesse ter feito os testes unitários por arquivo para melhor entendimento, por exemplo: `x.controller.spec.ts` e `x.service.spec.ts` ao invés de `x.spec.ts` mais generalista de cada módulo
-
-## Test yourself
-
-[<img src="https://run.pstmn.io/button.svg" alt="Run In Postman" style="width: 128px; height: 32px;">](https://app.getpostman.com/run-collection/31618362-833b04f0-59e1-470a-af82-235bef3eb8cc?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D31618362-833b04f0-59e1-470a-af82-235bef3eb8cc%26entityType%3Dcollection%26workspaceId%3D4900b586-8375-4755-b31a-1737c1537f91#?env%5BBankme%20challenge%5D=W3sia2V5IjoiYmFzZV91cmwiLCJ2YWx1ZSI6Imh0dHA6Ly9sb2NhbGhvc3Q6MzAwMCIsImVuYWJsZWQiOnRydWUsInR5cGUiOiJkZWZhdWx0Iiwic2Vzc2lvblZhbHVlIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIiwic2Vzc2lvbkluZGV4IjowfSx7ImtleSI6ImJlYXJlcl90b2tlbiIsInZhbHVlIjoiIiwiZW5hYmxlZCI6dHJ1ZSwidHlwZSI6InNlY3JldCIsInNlc3Npb25WYWx1ZSI6ImV5SmhiR2NpT2lKSVV6STFOaUlzSW5SNWNDSTZJa3BYVkNKOS5leUoxYzJWeVNXUWlPaUl4WVRsa01XUXpaQzA1WWprMUxUUTFOemd0WVRreVpTMHlOakUwWm1NMllqQXpaaklpTENKeWIyeGxJam9pVlZORlVpSXNJblZ6WlhKdVlXMWxJam9pLi4uIiwic2Vzc2lvbkluZGV4IjoxfSx7ImtleSI6InVzZXJfdXNlcm5hbWUiLCJ2YWx1ZSI6ImFkbWluIiwiZW5hYmxlZCI6dHJ1ZSwidHlwZSI6ImRlZmF1bHQiLCJzZXNzaW9uVmFsdWUiOiJhZG1pbiIsInNlc3Npb25JbmRleCI6Mn0seyJrZXkiOiJ1c2VyX3Bhc3N3b3JkIiwidmFsdWUiOiJhZG1pbiIsImVuYWJsZWQiOnRydWUsInR5cGUiOiJkZWZhdWx0Iiwic2Vzc2lvblZhbHVlIjoiYWRtaW4iLCJzZXNzaW9uSW5kZXgiOjN9XQ==)

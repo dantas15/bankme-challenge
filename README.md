@@ -59,11 +59,14 @@ Setup configuration
 pnpm config:local
 ```
 
-Run the project
+Run the whole project
 
 ```sh
 pnpm start:dev
 ```
+
+- The frontend will be running at <http://localhost:3000>
+- The backend will be running at <http://localhost:8080>
 
 ## Run with Docker
 
@@ -76,9 +79,14 @@ docker build . --target server --tag bankme-server:latest
 Run the containers
 
 ```sh
-docker run -d --name server -p 3000:3000 -e DATABASE_URL="file:./dev.db" -e JWT_SECRET="super_jwt_secret" bankme-server:latest
+docker run -d --name server -p 8080:8080 -e DATABASE_URL="file:./dev.db" -e JWT_SECRET="super_jwt_secret" bankme-server:latest
 ```
 
+## Postman
+
+You can test the API requests using Postman:
+
+[<img src="https://run.pstmn.io/button.svg" alt="Run In Postman" style="width: 128px; height: 32px;">](https://app.getpostman.com/run-collection/31618362-833b04f0-59e1-470a-af82-235bef3eb8cc?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D31618362-833b04f0-59e1-470a-af82-235bef3eb8cc%26entityType%3Dcollection%26workspaceId%3D4900b586-8375-4755-b31a-1737c1537f91#?env%5BBankme%20challenge%5D=W3sia2V5IjoiYmFzZV91cmwiLCJ2YWx1ZSI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsImVuYWJsZWQiOnRydWUsInR5cGUiOiJkZWZhdWx0Iiwic2Vzc2lvblZhbHVlIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwIiwic2Vzc2lvbkluZGV4IjowfSx7ImtleSI6ImJlYXJlcl90b2tlbiIsInZhbHVlIjoiIiwiZW5hYmxlZCI6dHJ1ZSwidHlwZSI6InNlY3JldCIsInNlc3Npb25WYWx1ZSI6ImV5SmhiR2NpT2lKSVV6STFOaUlzSW5SNWNDSTZJa3BYVkNKOS5leUoxYzJWeVNXUWlPaUl5T1dSaFltWm1OaTFtWWpnMUxUUm1Zak10T1RReU15MW1ZelpsTW1GaU9HTm1NVGdpTENKeWIyeGxJam9pVlZORlVpSXNJblZ6WlhKdVlXMWxJam9pLi4uIiwic2Vzc2lvbkluZGV4IjoxfSx7ImtleSI6InVzZXJfdXNlcm5hbWUiLCJ2YWx1ZSI6ImFkbWluIiwiZW5hYmxlZCI6dHJ1ZSwidHlwZSI6ImRlZmF1bHQiLCJzZXNzaW9uVmFsdWUiOiJhZG1pbiIsInNlc3Npb25JbmRleCI6Mn0seyJrZXkiOiJ1c2VyX3Bhc3N3b3JkIiwidmFsdWUiOiJhZG1pbiIsImVuYWJsZWQiOnRydWUsInR5cGUiOiJkZWZhdWx0Iiwic2Vzc2lvblZhbHVlIjoiYWRtaW4iLCJzZXNzaW9uSW5kZXgiOjN9XQ==)
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
