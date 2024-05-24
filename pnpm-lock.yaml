@@ -55,7 +55,7 @@ importers:
         specifier: ^8.4.1
         version: 8.4.1
       '@nestjs/cli':
-        specifier: ^10.0.0
+        specifier: ^10.3.2
         version: 10.3.2
       '@nestjs/schematics':
         specifier: ^10.0.0

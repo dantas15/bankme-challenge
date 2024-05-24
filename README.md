@@ -25,6 +25,8 @@ Make sure you got the prerequisites and follow the steps below to have a local c
 
 ## Prerequisites
 
+You can use only Docker if you'd like, but `node` and `pnpm` are recommended for development
+
 - Node.js
 
   ```sh
@@ -61,6 +63,20 @@ Run the project
 
 ```sh
 pnpm start:dev
+```
+
+## Run with Docker
+
+Build the images
+
+```sh
+docker build . --target server --tag bankme-server:latest 
+```
+
+Run the containers
+
+```sh
+docker run -d --name server -p 3000:3000 -e DATABASE_URL="file:./dev.db" -e JWT_SECRET="super_jwt_secret" bankme-server:latest
 ```
 
 <!-- MARKDOWN LINKS & IMAGES -->
