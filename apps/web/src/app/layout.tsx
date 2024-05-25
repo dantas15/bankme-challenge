@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { Poppins as FontSans } from 'next/font/google';
-import { cn } from '@/lib/utils';
+import { cn } from '@/shared/lib/utils';
 import './globals.css';
 
 const fontSans = FontSans({
@@ -28,7 +28,9 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        {children}
+        <div className="flex min-h-screen items-center justify-center w-100">
+          {children}
+        </div>
       </body>
     </html>
   );
