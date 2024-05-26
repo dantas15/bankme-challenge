@@ -28,7 +28,7 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        <div className="flex min-h-screen items-center justify-center w-100">
+        <div className="flex min-h-screen items-center justify-center w-full">
           {children}
         </div>
       </body>
