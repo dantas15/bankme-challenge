@@ -14,7 +14,7 @@ import {
 import { Button } from '@/shared/components/ui/button';
 import { Input } from '@/shared/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { userSchema } from '@/shared/schemas/userSchema';
+import { userSchema } from '@/shared/schemas/user-schema';
 
 export default function Login() {
   const form = useForm<z.infer<typeof userSchema>>({
