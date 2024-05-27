@@ -13,3 +13,5 @@ export const userSchema = z.object({
     message: 'password is required',
   }),
 });
+
+export type User = z.infer<typeof userSchema>;
