@@ -1,37 +1,35 @@
 import { apiUrl } from '@/shared/constants/api-url';
-import {
-  ApiErrorResponse,
-  apiErrorResponseSchema,
-} from '@/shared/schemas/api-response-schema';
 
-type FetchOptions = Omit<RequestInit, 'headers'> & {
+type FetchOptions = Omit<RequestInit, 'headers' | 'body'> & {
   headers?: HeadersInit;
+  body?: Record<string, any>;
   authToken?: string;
 };
 
-async function fetchClient<T>(
-  url: string,
-  options: FetchOptions = {}
-): Promise<ApiErrorResponse | T> {
-  const { authToken, headers, ...restOptions } = options;
+async function fetchClient<T>(url: string, options: FetchOptions = {}) {
+  const { authToken, headers, body, ...restOptions } = options;
 
   const defaultHeaders: HeadersInit = {
     'Content-Type': 'application/json',
   };
+  let defaultBody: BodyInit = '';
 
   if (authToken) {
     defaultHeaders['Authorization'] = `Bearer ${authToken}`;
   }
 
-  const response = await fetch(`${apiUrl}${url}`, {
+  if (body) {
+    defaultBody = JSON.stringify(body);
+  }
+
+  return fetch(`${apiUrl}${url}`, {
     ...restOptions,
     headers: {
       ...defaultHeaders,
       ...headers,
     },
+    body: defaultBody,
   });
-
-  return await response.json();
 }
 
 export { fetchClient };
