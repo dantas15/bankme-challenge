@@ -27,7 +27,7 @@ export default function Login() {
   });
   const router = useRouter();
 
-  function onSubmit(values: z.infer<typeof userSchema>) {}
+  async function onSubmit(values: z.infer<typeof userSchema>) {}
 
   return (
     <main className="w-[375px] sm:w-2/5 py-10 gap-4 flex flex-col items-center justify-center rounded-md border-ring bg-muted">
