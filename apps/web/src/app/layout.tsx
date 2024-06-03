@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Poppins as FontSans } from 'next/font/google';
 import { cn } from '@/shared/lib/utils';
 import './globals.css';
+import { Providers } from './providers';
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -29,7 +30,7 @@ export default function RootLayout({
         )}
       >
         <div className="flex min-h-screen items-center justify-center w-full">
-          {children}
+          <Providers>{children}</Providers>
         </div>
       </body>
     </html>
