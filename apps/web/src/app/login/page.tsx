@@ -14,20 +14,51 @@ import {
 import { Button } from '@/shared/components/ui/button';
 import { Input } from '@/shared/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { userSchema } from '@/shared/schemas/user-schema';
+import { loginSchema } from '@/shared/schemas/user-schema';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/shared/hooks/useAuth';
+import { useEffect } from 'react';
 
 export default function Login() {
-  const form = useForm<z.infer<typeof userSchema>>({
-    resolver: zodResolver(userSchema),
+  const router = useRouter();
+
+  const { login, isLoading, accessToken } = useAuth();
+
+  const form = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
-      username: '',
+      login: '',
       password: '',
     },
   });
-  const router = useRouter();
 
-  function onSubmit(values: z.infer<typeof userSchema>) {}
+  useEffect(() => {
+    if (accessToken) {
+      router.push('/dashboard');
+    }
+  }, [router, accessToken]);
+
+  async function onSubmit(values: z.infer<typeof loginSchema>) {
+    if (isLoading || accessToken) {
+      return;
+    }
+    const response = await login(values);
+    if (!response) {
+      return;
+    }
+    response.login.forEach((message) => {
+      form.setError('login', {
+        message,
+      });
+    });
+    response.password.forEach((message) => {
+      form.setError('password', {
+        message,
+      });
+    });
+  }
+
+  const isFormDisabled = !!isLoading || !!accessToken;
 
   return (
     <main className="w-[375px] sm:w-2/5 py-10 gap-4 flex flex-col items-center justify-center rounded-md border-ring bg-muted">
@@ -39,12 +70,13 @@ export default function Login() {
         >
           <FormField
             control={form.control}
-            name="username"
+            name="login"
+            disabled={isFormDisabled}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Username</FormLabel>
+                <FormLabel>Login</FormLabel>
                 <FormControl>
-                  <Input placeholder="myUsername" {...field} />
+                  <Input placeholder="mylogin" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -53,6 +85,7 @@ export default function Login() {
           <FormField
             control={form.control}
             name="password"
+            disabled={isFormDisabled}
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Password</FormLabel>
@@ -71,9 +104,7 @@ export default function Login() {
             <Button
               type="submit"
               className="place-self-end"
-              onClick={() => {
-                router.push('/');
-              }}
+              disabled={isFormDisabled}
             >
               Login
             </Button>
