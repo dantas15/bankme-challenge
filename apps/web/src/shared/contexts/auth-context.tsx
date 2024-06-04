@@ -6,7 +6,7 @@ import {
   ValidationMessage,
   groupValidationMessagesFromApi,
 } from '@/shared/lib/group-validation-messages-from-api';
-import { User } from '@/shared/schemas/user-schema';
+import { LoginData } from '@/shared/schemas/user-schema';
 import { accessTokenResponseSchema } from '@/shared/schemas/jwt-schema';
 import { fetchClient } from '@/shared/lib/fetch-client';
 
@@ -14,7 +14,7 @@ type AuthContextType = {
   username: string;
   isLoading: boolean;
   accessToken: string;
-  login: (userData: User) => Promise<ValidationMessage<User> | void>;
+  login: (userData: LoginData) => Promise<ValidationMessage<LoginData> | void>;
   logout: () => void;
 };
 
@@ -29,10 +29,13 @@ function AuthContextProvider({
   const [accessToken, setAccessToken] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const login = async (userData: User) => {
+  const login = async (userData: LoginData) => {
     setIsLoading(true);
     try {
-      const response = await fetchClient('/auth', { body: userData });
+      const response = await fetchClient('/auth', {
+        method: 'POST',
+        body: userData,
+      });
       const jsonData = await response.json();
 
       setIsLoading(false);
@@ -40,10 +43,10 @@ function AuthContextProvider({
       const validResponse = accessTokenResponseSchema.safeParse(jsonData);
 
       if (!validResponse.success) {
-        return groupValidationMessagesFromApi<User>(jsonData.message);
+        return groupValidationMessagesFromApi<LoginData>(jsonData.message);
       }
 
-      setUsername(userData.username);
+      setUsername(userData.login);
       setAccessToken(validResponse.data.access_token);
       localStorage.setItem(LS_AUTH_KEY, validResponse.data.access_token);
     } catch (e) {
