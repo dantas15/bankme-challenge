@@ -4,9 +4,11 @@ export type ValidationMessage<T> = {
 
 export function groupValidationMessagesFromApi<T>(
   apiMessage: unknown
-): ValidationMessage<T> | undefined {
+): ValidationMessage<T> | string {
   if (!Array.isArray(apiMessage)) {
-    return;
+    return typeof apiMessage === 'string'
+      ? apiMessage
+      : 'Unknown error happened :/';
   }
 
   const validationMessages: ValidationMessage<T> = {} as ValidationMessage<T>;
