@@ -14,7 +14,9 @@ type AuthContextType = {
   username: string;
   isLoading: boolean;
   accessToken: string;
-  login: (userData: LoginData) => Promise<ValidationMessage<LoginData> | void>;
+  login: (
+    userData: LoginData
+  ) => Promise<ValidationMessage<LoginData> | void | string>;
   logout: () => void;
 };
 

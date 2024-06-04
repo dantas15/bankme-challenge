@@ -46,6 +46,10 @@ export default function Login() {
     if (!response) {
       return;
     }
+    if (typeof response === 'string') {
+      // TODO: Add custom message display here
+      return;
+    }
     response.login.forEach((message) => {
       form.setError('login', {
         message,
