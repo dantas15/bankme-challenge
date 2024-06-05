@@ -1,5 +1,5 @@
 export type ValidationMessage<T> = {
-  [K in Partial<keyof T>]: string[];
+  [K in Partial<keyof T>]?: string[];
 };
 
 export function groupValidationMessagesFromApi<T>(
@@ -19,7 +19,7 @@ export function groupValidationMessagesFromApi<T>(
     const errorMessage = words.slice(1).join(' ');
 
     if (validationMessages[key]) {
-      validationMessages[key].push(errorMessage);
+      validationMessages[key]?.push(errorMessage);
     } else {
       validationMessages[key] = [message];
     }

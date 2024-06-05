@@ -50,12 +50,12 @@ export default function Login() {
       // TODO: Add custom message display here
       return;
     }
-    response.login.forEach((message) => {
+    response.login?.forEach((message) => {
       form.setError('login', {
         message,
       });
     });
-    response.password.forEach((message) => {
+    response.password?.forEach((message) => {
       form.setError('password', {
         message,
       });
