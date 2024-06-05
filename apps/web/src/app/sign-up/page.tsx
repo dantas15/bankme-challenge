@@ -15,8 +15,24 @@ import { Button } from '@/shared/components/ui/button';
 import { Input } from '@/shared/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { userSchema } from '@/shared/schemas/user-schema';
+import { useAuth } from '@/shared/hooks/useAuth';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { fetchClient } from '@/shared/lib/fetch-client';
+import { groupValidationMessagesFromApi } from '@/shared/lib/group-validation-messages-from-api';
 
 export default function Login() {
+  const router = useRouter();
+  const { accessToken } = useAuth();
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (accessToken) {
+      router.push('/dashboard');
+    }
+  }, [router, accessToken]);
+
   const form = useForm<z.infer<typeof userSchema>>({
     resolver: zodResolver(userSchema),
     defaultValues: {
@@ -25,7 +41,46 @@ export default function Login() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof userSchema>) {}
+  async function onSubmit(values: z.infer<typeof userSchema>) {
+    if (isLoading) {
+      return;
+    }
+    setIsLoading(true);
+
+    const response = await fetchClient('/integrations/user', {
+      method: 'POST',
+      body: values,
+    });
+    const jsonData = await response.json();
+
+    setIsLoading(false);
+
+    const validResponse = userSchema.safeParse(jsonData);
+
+    if (!validResponse.success) {
+      const errorsFromResponse = groupValidationMessagesFromApi<
+        z.infer<typeof userSchema>
+      >(jsonData.message);
+
+      if (typeof errorsFromResponse === 'string') {
+        // TODO: Add custom message display here
+        return;
+      }
+
+      errorsFromResponse.username?.forEach((message) => {
+        form.setError('username', {
+          message,
+        });
+      });
+      errorsFromResponse.password?.forEach((message) => {
+        form.setError('password', {
+          message,
+        });
+      });
+    }
+  }
+
+  const isFormDisabled = !!accessToken || isLoading;
 
   return (
     <main className="w-[375px] sm:w-2/5 py-10 gap-4 flex flex-col items-center justify-center rounded-md border-ring bg-muted">
@@ -38,6 +93,7 @@ export default function Login() {
           <FormField
             control={form.control}
             name="username"
+            disabled={isFormDisabled}
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Username</FormLabel>
@@ -51,25 +107,34 @@ export default function Login() {
           <FormField
             control={form.control}
             name="password"
+            disabled={isFormDisabled}
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input placeholder="mypassword123" {...field} />
+                  <Input
+                    placeholder="mypassword123"
+                    type="password"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
           <div className="flex flex-row-reverse">
-            <Button type="submit" className="place-self-end">
+            <Button
+              type="submit"
+              className="place-self-end"
+              disabled={isFormDisabled}
+            >
               Sign up
             </Button>
           </div>
           <div className="flex justify-center">
             <p className="text-muted-foreground">
               Already have an account?{' '}
-              <Link className="text-foreground" href="/">
+              <Link className="text-foreground" href="/login">
                 Click here
               </Link>{' '}
               to login!
