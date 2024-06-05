@@ -20,9 +20,11 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { fetchClient } from '@/shared/lib/fetch-client';
 import { groupValidationMessagesFromApi } from '@/shared/lib/group-validation-messages-from-api';
+import { useToast } from '@/shared/hooks/use-toast';
 
 export default function Login() {
   const router = useRouter();
+  const { toast } = useToast();
   const { accessToken } = useAuth();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -63,7 +65,11 @@ export default function Login() {
       >(jsonData.message);
 
       if (typeof errorsFromResponse === 'string') {
-        // TODO: Add custom message display here
+        toast({
+          variant: 'destructive',
+          title: 'Error!',
+          description: errorsFromResponse,
+        });
         return;
       }
 
@@ -78,6 +84,13 @@ export default function Login() {
         });
       });
     }
+
+    toast({
+      title: 'Success!',
+      description: "You'll be be able to login now!",
+    });
+
+    router.push('/');
   }
 
   const isFormDisabled = !!accessToken || isLoading;

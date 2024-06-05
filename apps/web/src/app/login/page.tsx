@@ -18,8 +18,10 @@ import { loginSchema } from '@/shared/schemas/user-schema';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/shared/hooks/useAuth';
 import { useEffect } from 'react';
+import { useToast } from '@/shared/hooks/use-toast';
 
 export default function Login() {
+  const { toast } = useToast();
   const router = useRouter();
 
   const { login, isLoading, accessToken } = useAuth();
@@ -44,10 +46,18 @@ export default function Login() {
     }
     const response = await login(values);
     if (!response) {
+      toast({
+        title: 'Success!',
+        description: "You're being redirected to the dashboard",
+      });
       return;
     }
     if (typeof response === 'string') {
-      // TODO: Add custom message display here
+      toast({
+        variant: 'destructive',
+        title: 'Error!',
+        description: response,
+      });
       return;
     }
     response.login?.forEach((message) => {
